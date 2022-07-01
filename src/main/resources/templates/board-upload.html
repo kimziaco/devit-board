@@ -130,15 +130,14 @@
 
             // let data = {"title": title, "price": price, "image": image, "content": content};
 
-
             $.ajax({
                 type: "POST",
-                url: "/boards/write",
+                url: "/images",
                 data: form_data,
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                    if (response["status_code"] === 201) {
+                    if (response["status_code"] === 200) {
                         location.href = `/boards/write/success`;
                     }
                 }
