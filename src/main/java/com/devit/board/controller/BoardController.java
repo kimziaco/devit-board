@@ -43,11 +43,11 @@ public class BoardController {
         return "board-upload";
     }
 
-    @PostMapping("/boards/write")
-    public String write(@RequestBody BoardRequestDto boardRequestDto) {
-        boardService.savePost(boardRequestDto);
-        return "redirect:/";
-    }
+//    @PostMapping("/boards/write")
+//    public String write(@RequestBody BoardRequestDto boardRequestDto) {
+//        boardService.savePost(boardRequestDto);
+//        return "redirect:/";
+//    }
 
     @GetMapping("/boards/write/success")
     public String boardsuccess() {
