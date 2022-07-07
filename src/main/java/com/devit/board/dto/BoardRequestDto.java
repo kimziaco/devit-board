@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class BoardRequestDto {
     private String price;
     private String title;
