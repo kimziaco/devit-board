@@ -3,7 +3,12 @@
 프로젝트에 대해 짧은 소개 : 프로젝트Devit의 board 도메인 부분입니다.
 
 주요 기능
-<p align="center"> ![image](https://user-images.githubusercontent.com/88760828/177943509-f4f6a739-48b6-4bca-8900-1c846df53ca0.png) </p>
+ </p>
+<p align="center"> 
+<img src = 'https://user-images.githubusercontent.com/88760828/177944069-cdb5cfa2-cb15-4a18-8926-c22ff8c3b703.png' style='width:400px;'/>
+</p>
+
+
 
 
 API 리스트
