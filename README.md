@@ -3,8 +3,8 @@
 프로젝트에 대해 짧은 소개 : 프로젝트Devit의 board 도메인 부분입니다.
 
 주요 기능
-<p align="center"> </p>
-![image](https://user-images.githubusercontent.com/88760828/177943509-f4f6a739-48b6-4bca-8900-1c846df53ca0.png)
+<p align="center"> ![image](https://user-images.githubusercontent.com/88760828/177943509-f4f6a739-48b6-4bca-8900-1c846df53ca0.png) </p>
+
 
 API 리스트
 repository 내 Wiki 또는 자동으로 생성된 API 문서(swagger, Spring Rest Doc 등 사용)
