@@ -19,6 +19,14 @@ Devit 프로젝트 내 board 관련 CRUD 서비스입니다.
 https://devit-spring.s3.ap-northeast-2.amazonaws.com/boardSwagger+UI.pdf
 ![image](https://user-images.githubusercontent.com/88760828/178178629-9380adc1-0100-4d02-bb78-fb0e086df636.png)
 
+# link to another repo
+
+- eureka server : https://github.com/ekgpgdi/devit-eureka-server
+- gateway : https://github.com/ekgpgdi/devit-gateway
+- certification service : https://github.com/ekgpgdi/devit-certification-service
+- board : https://github.com/kimziaco/devit-board
+- user : https://github.com/eet43/devit-user
+- chat : https://github.com/eet43/devit-chat
 
 
 
