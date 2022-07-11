@@ -1,28 +1,23 @@
-프로젝트명 : devit
+# 프로젝트명 : evit
 
-프로젝트에 대해 짧은 소개 : 프로젝트Devit의 board 도메인 부분입니다.
 
-주요 기능
- </p>
 <p align="center"> 
 <img src = 'https://user-images.githubusercontent.com/88760828/177944069-cdb5cfa2-cb15-4a18-8926-c22ff8c3b703.png' style='width:400px;'/>
 </p>
+프로젝트에 대해 짧은 소개 : 경험이 많고 실력 있는 개발자에게 도움을 받기 위한 플랫폼입니다.
+기업 또는 개인에게 알맞는 개발자의 스펙과 원하는 직무를 등록하여 구인하고 개발자는 확인 후 지원서를 넣어 서로가 만족하는 상황이 되었을 때 계약이 진행될 수 있도록 중개하는 웹 사이트입니다.
+
+
+# 주요 기능
+Devit 프로젝트 내 board 관련 CRUD 서비스입니다.
 
 
 
 
-API 리스트
-repository 내 Wiki 또는 자동으로 생성된 API 문서(swagger, Spring Rest Doc 등 사용)
-(선택사항) 위 적용이 어렵다면, README.md 에 적어서 다른 레퍼런스 링크(notion 등)보다 편하게 작성할 수 있게 함
 
-ERD
-DB 구조를 파악할 수 있는 정보
-Architecture
+# API 리스트
+![image](https://user-images.githubusercontent.com/88760828/178178629-9380adc1-0100-4d02-bb78-fb0e086df636.png)
 
-프로젝트 아키텍쳐 구조
-위 내용이 어렵다면 사용한 기술 중심으로 도식을 그려보기
 
-프로젝트 팀원
-이름1 – github 프로필 – (선택사항/ 이력서 등 기재할)이메일@example.com 이름2 – github 프로필 – (선택사항/ 이력서 등 기재할)이메일@example.com
 
-MIT license를 준수합니다. LICENSE에서 자세한 정보를 확인할 수 있습니다.
+
