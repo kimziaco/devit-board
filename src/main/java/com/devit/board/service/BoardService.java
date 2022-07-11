@@ -16,10 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.io.IOException;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Transactional
@@ -69,12 +66,15 @@ public class BoardService {
     }
 
     public Page<Board> search(String keyword, Pageable pageable) {
-        if (keyword == null) {
+        System.out.println("1" + keyword); //
+        if (keyword == null || keyword.equals("")) {
             return boardRepository.findAll(pageable);
         } else {
             return boardRepository.findByTitleContaining(keyword, pageable);
         }
+
     }
+
 
     public UUID getUuid(String data) { //throws NoResourceException {
 
@@ -85,6 +85,14 @@ public class BoardService {
         JSONObject jsonObject = new JSONObject(payload);
         String sample = jsonObject.getString("uuid");
         return UUID.fromString(sample);
+    }
+    public Board getDetail(UUID id){
+        Optional<Board> boardOptional = boardRepository.findByBoardUid(id);
+        if(boardOptional.isEmpty()) {
+            return null;
+        } else {
+            return boardOptional.get();
+        }
     }
 
 
