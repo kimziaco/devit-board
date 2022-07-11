@@ -1,4 +1,4 @@
-# 프로젝트명 : evit
+# 프로젝트명 : Devit
 
 
 <p align="center"> 
