@@ -215,7 +215,7 @@
 
                         let title = boards[i]['board']['title'];
                         let content = boards[i]['board']['content'];
-                        let cost = boards[i]['board']['cost'];
+                        let price = boards[i]['board']['price'];
                         let created_at = boards[i]['board']['created_at'].split(" ")[0];
                         let image_url = boards[i]['board']['image_url'];
                         let board_id = String(boards[i]['board']['uuid']);
@@ -270,7 +270,7 @@
                                         <time datetime="2013-11-10">${created_at}</time>
                                     </p>
                                 </h5>
-                                <p> ${cost} 원 </p>
+                                <p> ${price} 원 </p>
                                 <p>${content}</p>
                             </div><!-- column nine -->
                         </article>
@@ -296,7 +296,7 @@
                                         <time datetime="2013-11-10">[${created_at}]</time>
                                     </p>
                                 </h5>
-                                <p> ${cost} 원 </p>
+                                <p> ${price} 원 </p>
                                 <p>${content}</p>
                             </div><!-- column nine -->
                         </article>
@@ -322,14 +322,13 @@
                                         <time datetime="2013-11-10">${created_at}</time>
                                     </p>
                                 </h5>
-                                <p> ${cost} 원 </p>
+                                <p> ${price} 원 </p>
                                 <p>${content}</p>
                             </div><!-- column nine -->
                         </article>
                         `;
                             }
                         }
-
 
                         $('#board-list').append(tmp_html);
                     }
@@ -370,9 +369,13 @@
             })
         }
 
+
+
+
         function boardWrite() {
             location.href = `/board-upload`;
         }
+
 
     </script>
 </head>
@@ -386,6 +389,7 @@
                 <div class="search-results">
                     <h4 id="search-text"></h4>
                 </div>
+
                 <div id="board-list">
 
                 </div>

@@ -127,9 +127,6 @@
             form_data.append("content", content)
 
 
-
-            // let data = {"title": title, "price": price, "image": image, "content": content};
-
             $.ajax({
                 type: "POST",
                 url: "/images",
@@ -138,7 +135,7 @@
                 contentType: false,
                 success: function (response) {
                     if (response["status_code"] === 200) {
-                        location.href = `/boards/write/success`;
+                        location.href = `board-upload-success.html`;
                     }
                 }
             });
@@ -162,18 +159,18 @@
                 <th>비용</th>
                 <td><input type="text" id="price" placeholder="원" onkeyup="inputNumberFormat(this)"/></td>
             </tr>
-    <tr>
-        <th>썸네일</th>
-        <td><input type="file" id="image"/></td>
-    </tr>
-    <tr>
-        <th>내용</th>
-        <td><textarea type="text" id="content"></textarea></td>
-    </tr>
-    </table>
-    <div class="upload-button">
-        <button onclick="enroll_board()">게시글 등록</button>
-    </div>
+            <tr>
+                <th>썸네일</th>
+                <td><input type="file" id="image"/></td>
+            </tr>
+            <tr>
+                <th>내용</th>
+                <td><textarea type="text" id="content"></textarea></td>
+            </tr>
+        </table>
+        <div class="upload-button">
+            <button onclick="enroll_board()">게시글 등록</button>
+        </div>
     </div>
 </main><!-- main -->
 <footer include-html="/footer" role="contentinfo"></footer>

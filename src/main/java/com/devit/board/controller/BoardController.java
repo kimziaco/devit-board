@@ -1,62 +1,67 @@
 package com.devit.board.controller;
-
 import com.devit.board.dto.BoardRequestDto;
-import com.devit.board.repository.BoardRepository;
+import com.devit.board.entity.Board;
 import com.devit.board.service.BoardService;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
+
+
+@RestController
 @AllArgsConstructor
 public class BoardController {
 
     private final BoardService boardService;
-    private final BoardRepository BoardRepository;
 
 
-    @GetMapping("/index")
-    public String main() {
-        return "index";
+    @GetMapping("/api/boards/list")
+    public List<Board> list() {
+        return boardService.list();
     }
 
-    @GetMapping("/boards")
-    public String list() {
+    @PostMapping("/api/boards/upload")
+    public String upload(@ModelAttribute BoardRequestDto boardRequestDto,@RequestHeader("Authorization")String data) throws IOException {
+        boardService.savePost(boardRequestDto,data);
+        return "업로드를 성공했습니다.";
+    }
+
+    @PutMapping("/api/boards/{id}")
+    public Long updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto) {
+        boardService.update(id, boardRequestDto);
+        return id;
+    }
+    @DeleteMapping("/api/boards/{id}")
+    public String deleteBoard(@PathVariable Long id) {
+        boardService.delete(id);
         return "board";
     }
 
-    @GetMapping("/header")
-    public String header(){
-        return "header";
+    @GetMapping("/api/boards")
+    public Page<Board> search(String keyword, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+        return boardService.search(keyword, pageable);
     }
 
-    @GetMapping("/footer")
-    public String footer(){
-        return "footer";
+    @GetMapping("/api/boards/{id}")
+    public Object boardDetail(@PathVariable UUID id){
+        Board board = boardService.getDetail(id);
+        if(board == null) {
+            return "아이디가 존재하지 않습니다.";
+        } else {
+            return board;
+        }
     }
 
 
-    @GetMapping("/boards/write")
-    public String write() {
-        return "board-upload";
-    }
 
-//    @PostMapping("/boards/write")
-//    public String write(@RequestBody BoardRequestDto boardRequestDto) {
-//        boardService.savePost(boardRequestDto);
-//        return "redirect:/";
-//    }
 
-    @GetMapping("/boards/write/success")
-    public String boardsuccess() {
 
-        return "board-upload-success";
-    }
-
-    @GetMapping("/update")
-    public String update() {
-        return "board/update";
-    }
 }

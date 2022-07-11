@@ -5,10 +5,13 @@ import com.devit.board.entity.Timestamped;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "board")
@@ -30,6 +33,12 @@ public class Board extends Timestamped {
     @Column(length = 200, nullable = false)
     private String imageUrl;
 
+    @Column(nullable = false, unique = true, columnDefinition = "BINARY(16)")
+    private UUID boardUid;
+
+    @Column(nullable = false, unique = true, columnDefinition = "BINARY(16)")
+    private UUID userUid;
+
     @Builder
     public Board(Long id, String title, String price, String content, String imageUrl) {
         this.id = id;
@@ -46,4 +55,11 @@ public class Board extends Timestamped {
         this.content = boardRequestDto.getContent();
         this.imageUrl = url;
     }
+
+    public void update(BoardRequestDto boardRequestDto){
+        this.title = boardRequestDto.getTitle();
+        this.content = boardRequestDto.getContent();
+        this.price = boardRequestDto.getPrice();
+    }
 }
+
