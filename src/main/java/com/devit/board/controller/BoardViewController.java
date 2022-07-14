@@ -36,5 +36,10 @@ public class BoardViewController {
         return "board-upload-fail";
     }
 
+    @GetMapping("/boards/detail")
+    public String boardDetail() {
+        return "board-detail";
+    }
+
 
 }

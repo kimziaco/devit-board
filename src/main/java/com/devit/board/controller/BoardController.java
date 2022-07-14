@@ -29,10 +29,19 @@ public class BoardController {
     }
 
     @PostMapping("/api/boards/upload")
-    public String upload(@ModelAttribute BoardRequestDto boardRequestDto,@RequestHeader("Authorization")String data) throws IOException {
+    public String upload(@ModelAttribute BoardRequestDto boardRequestDto,@RequestHeader(name="Authorization",required = false) String data) throws IOException {
+        System.out.println("here"+ data);
         boardService.savePost(boardRequestDto,data);
-        return "업로드를 성공했습니다.";
+        return "업로드성공";
     }
+
+//    @PostMapping("/api/boards/upload")
+//    public String upload(@ModelAttribute BoardRequestDto boardRequestDto) throws IOException {
+//        System.out.println("1");
+//        boardService.savePost(boardRequestDto);
+//        return "업로드를 성공했습니다.";
+//    }
+
 
     @PutMapping("/api/boards/{id}")
     public Long updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto) {

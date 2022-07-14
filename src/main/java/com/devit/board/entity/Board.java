@@ -39,6 +39,9 @@ public class Board extends Timestamped {
     @Column(nullable = false, unique = true, columnDefinition = "BINARY(16)")
     private UUID userUid;
 
+    @Column(length = 20, nullable = false)
+    private String username;
+
     @Builder
     public Board(Long id, String title, String price, String content, String imageUrl) {
         this.id = id;
