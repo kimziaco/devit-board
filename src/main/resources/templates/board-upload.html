@@ -119,27 +119,46 @@
             let price = $("#price").val()
             let image = $('#image')[0].files[0]
             let content = $("#content").val()
+            console.log(image);
 
             let form_data = new FormData()
             form_data.append("title", title)
             form_data.append("price", price)
-            form_data.append("image", image)
+
+            if (image !== undefined) {
+                form_data.append("image", image)
+            }
             form_data.append("content", content)
+
+            var token = localStorage.getItem("Authorization");
+            console.log(token)
 
 
             $.ajax({
                 type: "POST",
-                url: "/images",
+                url: "/api/boards/upload",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", token);
+                },
+
                 data: form_data,
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                    if (response["status_code"] === 200) {
-                        location.href = `board-upload-success.html`;
+                    console.log(response)
+                    if (response === "업로드성공") {
+                        location.href = "/boards/write-success";
+                    }
+                    else{
+                        location.href = "/boards/write-fail";
                     }
                 }
+                , error: function (response) {
+                    console.log(response);
+                },
             });
         }
+
     </script>
 </head>
 

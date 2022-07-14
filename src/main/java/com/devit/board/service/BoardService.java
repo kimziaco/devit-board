@@ -25,24 +25,51 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final S3Uploader s3Uploader;
 
-    public Long savePost(BoardRequestDto boardRequestDto,String data) throws IOException {
+
+    public Long savePost(BoardRequestDto boardRequestDto, String data) throws IOException {
         String url;
-        if(boardRequestDto.getImage() == null) {
+        if (boardRequestDto.getImage() == null) {
             url = "default";
         } else {
             url = s3Uploader.upload(boardRequestDto.getImage(), "static");
         }
-            Board board = new Board(boardRequestDto, url);
-            UUID BoardUuid = UUID.randomUUID();
-            UUID userUuid = getUuid(data);
-            board.setBoardUid(BoardUuid);
-            board.setUserUid(userUuid);
+        Board board = new Board(boardRequestDto, url);
+        UUID BoardUuid = UUID.randomUUID();
+        UUID userUuid = getUuid(data);
 
-            boardRepository.save(board);
-            System.out.println(url);
-            System.out.println(board.getId());
-            return board.getId();
-        }
+        String username = getUsername(data);
+        board.setUsername(username);
+        board.setBoardUid(BoardUuid);
+        board.setUserUid(userUuid);
+
+
+
+        boardRepository.save(board);
+        System.out.println(url);
+        System.out.println(board.getId());
+        return board.getId();
+    }
+
+//    public Long savePost(BoardRequestDto boardRequestDto) throws IOException {
+//
+//        String url;
+//        if (boardRequestDto.getImage() == null) {
+//            url = "default";
+//        } else {
+//            url = s3Uploader.upload(boardRequestDto.getImage(), "static");
+//        }
+//
+//        Board board = new Board(boardRequestDto, url);
+//        UUID BoardUuid = UUID.randomUUID();
+//        board.setBoardUid(BoardUuid);
+//        UUID userUuid = UUID.randomUUID();
+//        board.setUserUid(userUuid);
+//
+//        boardRepository.save(board);
+//        System.out.println(url);
+//        System.out.println(board.getId());
+//        return board.getId();
+//    }
 
 
     public Long update(Long id, BoardRequestDto boardRequestDto) {
@@ -86,9 +113,20 @@ public class BoardService {
         String sample = jsonObject.getString("uuid");
         return UUID.fromString(sample);
     }
-    public Board getDetail(UUID id){
+
+    public String getUsername(String data) { //throws NoResourceException {
+
+        String[] chunks = data.split("\\.");
+        Base64.Decoder decoder = Base64.getDecoder();
+        String payload = new String(decoder.decode(chunks[1]));
+
+        JSONObject jsonObject = new JSONObject(payload);
+        return jsonObject.getString("nickName");
+    }
+
+    public Board getDetail(UUID id) {
         Optional<Board> boardOptional = boardRepository.findByBoardUid(id);
-        if(boardOptional.isEmpty()) {
+        if (boardOptional.isEmpty()) {
             return null;
         } else {
             return boardOptional.get();
