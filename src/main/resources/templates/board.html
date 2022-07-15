@@ -224,7 +224,7 @@
 
                         if (i < 5) {
                             let tmp_html = `
-                                    <li><a href="#" onclick="boardDetail()">${boards[i]['title']}</a></li>
+                                    <li><a href="#" onclick="boardDetail('${boards[i]['boardUid']}')">${boards[i]['title']}</a></li>
                             `;
                             $('#recent-list').append(tmp_html)
                         }
@@ -236,7 +236,7 @@
                         let image_url = boards[i]['imageUrl'];
                         let board_id = String(boards[i]['boardUid']);
                         let user_id = String(boards[i]['userUid'])
-                        let writer_name = boards[i]['username']
+                        let writer = boards[i]['username']
 
                         let tmp_html = ``;
 
@@ -255,9 +255,9 @@
                             </div>
 
                             <div class="column nine last">
-                                <h2><a hre="#" onclick="boardDetail()">f />${title}</a></h2>
+                                <h2><a href="#" onclick="boardDetail('${boards[i]['boardUid']}')">${title}</a></h2>
                                 <h5 class="meta-post">
-                                    <p class="writer">작성자 : ${writer_name}
+                                    <p class="writer">작성자 : ${writer}
                                         <time datetime="2013-11-10">[${created_at}]</time>
                                     </p>
                                 </h5>
@@ -281,9 +281,9 @@
 
                             <div class="column nine last">
 
-                                <h2><a href="#" onclick="boardDetail()">${title}</h2>
+                                <h2><a href="#" onclick="boardDetail('${boards[i]['boardUid']}')"${title}</h2>
                                 <h5 class="meta-post">
-                                    <p class="writer">작성자 : ${writer_name} -
+                                    <p class="writer">작성자 : ${writer} -
                                         <time datetime="2013-11-10">${created_at}</time>
                                     </p>
                                 </h5>
@@ -307,9 +307,9 @@
                             </button></div>
                             </div>
                             <div class="column nine last">
-                                <h2><a href="#" onclick="boardDetail()">${title}</a></h2>
+                                <h2><a href="#" onclick="boardDetail('${boards[i]['boardUid']}')">${title}</a></h2>
                                 <h5 class="meta-post">
-                                    <p class="writer">작성자 : ${writer_name}
+                                    <p class="writer">작성자 : ${writer}
                                         <time datetime="2013-11-10">[${created_at}]</time>
                                     </p>
                                 </h5>
@@ -335,7 +335,7 @@
                             <div class="column nine last">
                                 <h2><a href="#" onclick="boardDetail()">${title}></h2>
                                 <h5 class="meta-post">
-                                    <p class="writer">작성자 : ${writer_name} -
+                                    <p class="writer">작성자 : ${writer} -
                                         <time datetime="2013-11-10">${created_at}</time>
                                     </p>
                                 </h5>
@@ -385,8 +385,9 @@
             })
         }
 
-        function boardDetail() {
-            location.href = '/boards/detail'
+        function boardDetail(boardUuid) {
+            location.href = `/boards/detail?uuid=${boardUuid}`
+            console.log(boardUuid)
         }
 
         // 구인 글 작성 버튼 클릭시 실행되는 함수
