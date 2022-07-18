@@ -10,7 +10,6 @@ public class BoardViewController {
     public String main() {
         return "board";
     }
-
     @GetMapping("/header")
     public String header() {
         return "header";
@@ -39,6 +38,11 @@ public class BoardViewController {
     @GetMapping("/boards/detail")
     public String boardDetail() {
         return "board-detail";
+    }
+
+    @GetMapping("/boards/prac")
+    public String prac(){
+        return "prac2";
     }
 
 

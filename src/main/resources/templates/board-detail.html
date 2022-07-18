@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    <title>상세보기</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Jua', sans-serif;
+        }
+
+        .board-img img {
+            width: 500px;
+            height: 400px;
+            background-position: center;
+            background-size: cover;
+            display: block;
+        }
+
+
+        .item-order {
+            width: 500px;
+            margin-bottom: 20px;
+        }
+
+        .btn-order {
+            margin: auto;
+            width: 100px;
+
+            display: block;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            let params = new URLSearchParams(window.location.search);
+            let uuid = params.get('uuid')
+
+            detailListing(uuid);
+            console.log(uuid);
+        });
+
+        function parseJwt() {
+            let token = localStorage.getItem("Authorization");
+            let base64Url = token.split('.')[1];
+            let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        }
+
+        function back() {
+            location.href = `/board`;
+        }
+
+        function remove(id) {
+            console.log(id)
+
+            if (confirm("게시글을 삭제하시겠습니까?") === true) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "/api/boards/" + id,
+                    data: {},
+                    success: function (response) {
+                        if (response === "삭제성공") {
+                            location.href = "/board;"
+                        }
+                    }
+                });
+            } else {
+                return false;
+
+            }
+
+
+        }
+
+        function update() {
+
+        }
+
+        function submit() {
+
+        }
+
+        function detailListing(uuid) {
+
+            $('#detail-list').empty()
+
+            $.ajax({
+                type: "GET",
+                url: `/api/boards/${uuid}`,
+                data: {},
+                success: function (response) {
+
+                    let boards = response
+                    let id = boards['id'];
+                    console.log(id)
+
+                    let title = boards['title'];
+                    let content = boards['content'];
+                    let price = boards['price'];
+                    let created_at = boards['createdAt'].split(".")[0];
+                    let image_url = boards['imageUrl'];
+
+                    let writer = boards['username'];
+                    let userUuid = boards['userUid'];
+
+                    let tmp_html = ``;
+
+                    if (image_url === "default") {
+                        tmp_html = `
+                                <div class="wrap">
+                                    <div class="board-img">
+                                        <img src="https://devit-board.s3.ap-northeast-2.amazonaws.com/static/logo.png" alt="" class="thumbnail">
+                                    </div>
+
+                                    <div class="board-detail">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <p class="input-group-text">제목</p>
+                                            </div>
+                                            <p class="form-control" id="title" cols="30" rows="5">${title}</p>
+                                        </div>
+
+                                        <div class="item-order">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <p class="input-group-text">작성일자</p>
+                                                </div>
+                                                <p class="form-control" id="created_at" cols="30" rows="5">${created_at}</p>
+                                            </div>
+
+                                            <div class="item-order">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <p class="input-group-text">작성자</p>
+                                                    </div>
+                                                    <p class="form-control" id="writer" cols="30" rows="5">${writer}</p>
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <p class="input-group-text">가격</p>
+                                                    </div>
+                                                    <p class="form-control" id="price" cols="30" rows="5">${price}</p>
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <p class="input-group-text">내용</p>
+                                                        <div style="height: 300px; margin: 0px; display: inline-block"></div>
+                                                    </div>
+                                                    <p class="form-control" id="content" cols="30" rows="5">${content}</p>
+                                                </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                        `;
+                    } else {
+                        tmp_html = `
+                        <div class="wrap">
+                                    <div class="board-img">
+                                        <img src=${image_url} alt="" class="thumbnail">
+                                    </div>
+
+                                    <div class="board-detail">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <p class="input-group-text">제목</p>
+                                            </div>
+                                            <p class="form-control" id="title" cols="30" rows="5">${title}</p>
+                                        </div>
+
+                                        <div class="item-order">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <p class="input-group-text">작성일자</p>
+                                                </div>
+                                                <p class="form-control" id="created_at" cols="30" rows="5">${created_at}</p>
+                                            </div>
+
+                                            <div class="item-order">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <p class="input-group-text">작성자</p>
+                                                    </div>
+                                                    <p class="form-control" id="writer" cols="30" rows="5">${writer}</p>
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <p class="input-group-text">가격</p>
+                                                    </div>
+                                                    <p class="form-control" id="price" cols="30" rows="5">${price}</p>
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <p class="input-group-text">내용</p>
+                                                        <div style="height: 300px; margin: 0px; display: inline-block"></div>
+                                                    </div>
+                                                    <p class="form-control" id="content" cols="30" rows="5">${content}</p>
+                                                </div>
+
+
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                        `;
+
+                    }
+                    $('#detail-list').append(tmp_html)
+
+
+                    tmp_html2 = ``;
+                    let userInfo = parseJwt();
+
+
+                    if (userUuid === userInfo["uuid"]) {
+
+                        tmp_html2 = `
+                        <div class ="detail-button"></div>
+                        <button type="button" id="listbutton" style="float: right;" onClick="back()" className="btn btn-primary btn-order">목록</button>
+                        <button type="button" id="deletebutton" style="float: right;" onClick="remove('${boards['id']}')" className="btn btn-primary btn-order">삭제</button>
+                        <button type="button" id="updatebutton" style="float: right;" onClick="update()" className="btn btn-primary btn-order">수정</button>
+                        </div>
+                        `;
+
+                        $('#buttons').append(tmp_html2)
+
+                    } else {
+                        tmp_html2 = `
+                        <button type="button" id="submitbutton" style="float: right;" onClick="submit" className ="btn btn-primary btn-order">제출</button>
+                        <button type="button" id="listbutton" style="float: right;" onClick="back()" className="btn btn-primary btn-order">목록</button>
+                        `;
+                        $('#buttons').append(tmp_html2)
+                    }
+
+                }
+            })
+        }
+
+    </script>
+
+</head>
+
+<body>
+
+<div class="wrap">
+    <div id="detail-list">
+
+        <div class="item-img">
+            <img src="/css/logo.png" alt="" class="thumbnail">
+        </div>
+
+        <div class="item-order">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <p class="input-group-text">제목</p>
+                </div>
+                <p class="form-control" id="title" cols="30" rows="5">${title}</p>
+            </div>
+
+            <div class="item-order">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <p class="input-group-text">작성일자</p>
+                    </div>
+                    <p class="form-control" id="created_at" cols="30" rows="5">${created_at}</p>
+                </div>
+
+                <div class="item-order">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <p class="input-group-text">작성자</p>
+                        </div>
+                        <p class="form-control" id="writer" cols="30" rows="5">${writer}</p>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <p class="input-group-text">가격</p>
+                        </div>
+                        <p class="form-control" id="price" cols="30" rows="5">${price}</p>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <p class="input-group-text">내용</p>
+                            <div style="height: 300px; margin: 0px; display: inline-block"></div>
+                        </div>
+                        <p class="form-control" id="content" cols="30" rows="5">${content}</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="detail-button" id="buttons"></div>
+</div>
+
+
+</body>
+</html>

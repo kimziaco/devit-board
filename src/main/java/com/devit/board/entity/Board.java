@@ -1,7 +1,6 @@
 package com.devit.board.entity;
 
 import com.devit.board.dto.BoardRequestDto;
-import com.devit.board.entity.Timestamped;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +41,9 @@ public class Board extends Timestamped {
     @Column(length = 20, nullable = false)
     private String username;
 
+    @Column(nullable = false)
+    private boolean done;
+
     @Builder
     public Board(Long id, String title, String price, String content, String imageUrl) {
         this.id = id;
@@ -50,7 +52,6 @@ public class Board extends Timestamped {
         this.content = content;
         this.imageUrl = imageUrl;
     }
-
 
     public Board(BoardRequestDto boardRequestDto, String url) {
         this.title = boardRequestDto.getTitle();
