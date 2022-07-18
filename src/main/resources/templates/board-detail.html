@@ -54,12 +54,14 @@
             width: 500px;
             margin: auto;
         }
+
     </style>
 
     <script>
         $(document).ready(function () {
             let params = new URLSearchParams(window.location.search);
             let uuid = params.get('uuid')
+
             detailListing(uuid);
             console.log(uuid);
         });
@@ -75,7 +77,42 @@
             return JSON.parse(jsonPayload);
         }
 
+        function back() {
+            location.href = `/board`;
+        }
+
+        function remove(id) {
+            console.log(id)
+
+            if (confirm("게시글을 삭제하시겠습니까?") === true) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "/api/boards/" + id,
+                    data: {},
+                    success: function (response) {
+                        if (response === "삭제성공") {
+                            location.href = "/board;"
+                        }
+                    }
+                });
+            } else {
+                return false;
+
+            }
+
+
+        }
+
+        function update() {
+
+        }
+
+        function submit() {
+
+        }
+
         function detailListing(uuid) {
+
             $('#detail-list').empty()
 
             $.ajax({
@@ -84,27 +121,78 @@
                 data: {},
                 success: function (response) {
 
-                    console.log(response)
-
                     let boards = response
+                    let id = boards['id'];
+                    console.log(id)
 
                     let title = boards['title'];
                     let content = boards['content'];
                     let price = boards['price'];
                     let created_at = boards['createdAt'].split(".")[0];
                     let image_url = boards['imageUrl'];
+
                     let writer = boards['username'];
                     let userUuid = boards['userUid'];
 
-                    console.log(title)
-                    console.log(content)
-
                     let tmp_html = ``;
 
-                    tmp_html = `
+                    if (image_url === "default") {
+                        tmp_html = `
                                 <div class="wrap">
                                     <div class="board-img">
-                                        <img src="/css/logo.png" alt="" class="thumbnail">
+                                        <img src="https://devit-board.s3.ap-northeast-2.amazonaws.com/static/logo.png" alt="" class="thumbnail">
+                                    </div>
+
+                                    <div class="board-detail">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <p class="input-group-text">제목</p>
+                                            </div>
+                                            <p class="form-control" id="title" cols="30" rows="5">${title}</p>
+                                        </div>
+
+                                        <div class="item-order">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <p class="input-group-text">작성일자</p>
+                                                </div>
+                                                <p class="form-control" id="created_at" cols="30" rows="5">${created_at}</p>
+                                            </div>
+
+                                            <div class="item-order">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <p class="input-group-text">작성자</p>
+                                                    </div>
+                                                    <p class="form-control" id="writer" cols="30" rows="5">${writer}</p>
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <p class="input-group-text">가격</p>
+                                                    </div>
+                                                    <p class="form-control" id="price" cols="30" rows="5">${price}</p>
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <p class="input-group-text">내용</p>
+                                                        <div style="height: 300px; margin: 0px; display: inline-block"></div>
+                                                    </div>
+                                                    <p class="form-control" id="content" cols="30" rows="5">${content}</p>
+                                                </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                        `;
+                    } else {
+                        tmp_html = `
+                        <div class="wrap">
+                                    <div class="board-img">
+                                        <img src=${image_url} alt="" class="thumbnail">
                                     </div>
 
                                     <div class="board-detail">
@@ -149,35 +237,38 @@
 
 
                                         </div>
+
+
                                     </div>
                                 </div>
-                                        `;
+                        `;
+
+                    }
                     $('#detail-list').append(tmp_html)
 
 
-                    tmp_html = ``;
-
+                    tmp_html2 = ``;
                     let userInfo = parseJwt();
-                    console.log(userInfo)
-                    console.log(userUuid)
+
 
                     if (userUuid === userInfo["uuid"]) {
-                        console.log("1")
 
-                        tmp_html = `
-
-                        <button type="button" id="listbutton" style="float: right;" onClick="order()" className="btn btn-primary btn-order">목록 </button>
-                        <button type="button" id="deletebutton" style="float: right;" onClick="order()"className="btn btn-primary btn-order">삭제</button>
-                        <button type="button" id="updatebutton" style="float: right;" onClick="order()" className="btn btn-primary btn-order">수정</button>
+                        tmp_html2 = `
+                        <div class ="detail-button"></div>
+                        <button type="button" id="listbutton" style="float: right;" onClick="back()" className="btn btn-primary btn-order">목록</button>
+                        <button type="button" id="deletebutton" style="float: right;" onClick="remove('${boards['id']}')" className="btn btn-primary btn-order">삭제</button>
+                        <button type="button" id="updatebutton" style="float: right;" onClick="update()" className="btn btn-primary btn-order">수정</button>
+                        </div>
                         `;
-                        $('#buttons').append(tmp_html)
+
+                        $('#buttons').append(tmp_html2)
+
                     } else {
-
-                        tmp_html = `
-                        <button type="button" id="submitbutton" style="float: right;" onClick="order()" className ="btn btn-primary btn-order"> 제출하기 </button>
-                        <button type="button" id="listbutton" style="float: right;" onClick="order()" className="btn btn-primary btn-order">목록 </button>
+                        tmp_html2 = `
+                        <button type="button" id="submitbutton" style="float: right;" onClick="submit" className ="btn btn-primary btn-order">제출</button>
+                        <button type="button" id="listbutton" style="float: right;" onClick="back()" className="btn btn-primary btn-order">목록</button>
                         `;
-                        $('#buttons').append(tmp_html)
+                        $('#buttons').append(tmp_html2)
                     }
 
                 }
@@ -190,8 +281,9 @@
 
 <body>
 
-<div class="plain" id="detail-list">
-    <div class="wrap">
+<div class="wrap">
+    <div id="detail-list">
+
         <div class="item-img">
             <img src="/css/logo.png" alt="" class="thumbnail">
         </div>
@@ -234,15 +326,15 @@
                         </div>
                         <p class="form-control" id="content" cols="30" rows="5">${content}</p>
                     </div>
+
                 </div>
             </div>
 
-            <div id="buttons">
-            </div>
         </div>
     </div>
+    <div class="detail-button" id="buttons"></div>
 </div>
 
-</body>
 
+</body>
 </html>

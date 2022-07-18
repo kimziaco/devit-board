@@ -205,6 +205,7 @@
             console.log(url);
 
 
+
             $.ajax({
                 type: "GET",
                 url: url,
@@ -245,9 +246,9 @@
                                 tmp_html = `
                         <article class="clear-after white-card">
                             <div class="column three card">
-                                <img src="/static/logo.png" alt="" class="thumbnail">
+                                <img src="https://devit-board.s3.ap-northeast-2.amazonaws.com/static/logo.png" alt="" class="thumbnail">
                                 <div id="bookmark">
-                                <button class="favorite" style="border: 0; outline: 0; background-color:transparent" onclick="boardDetail()">
+                                <button class="favorite" style="border: 0; outline: 0; background-color:transparent" onclick="boardDetail('${boards[i]['boardUid']}')">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
                                         <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
                                     </svg>
@@ -333,7 +334,7 @@
 </div>
 
                             <div class="column nine last">
-                                <h2><a href="#" onclick="boardDetail()">${title}></h2>
+                                <h2><a href="#" onclick="boardDetail('${boards[i]['boardUid']}')">${title}</h2>
                                 <h5 class="meta-post">
                                     <p class="writer">작성자 : ${writer} -
                                         <time datetime="2013-11-10">${created_at}</time>

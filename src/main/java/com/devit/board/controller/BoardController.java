@@ -51,7 +51,7 @@ public class BoardController {
     @DeleteMapping("/api/boards/{id}")
     public String deleteBoard(@PathVariable Long id) {
         boardService.delete(id);
-        return "board";
+        return "삭제성공";
     }
 
     @GetMapping("/api/boards")
@@ -68,6 +68,8 @@ public class BoardController {
             return board;
         }
     }
+
+
 
 
 

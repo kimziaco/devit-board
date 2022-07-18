@@ -15,3 +15,8 @@ public class BoardRequestDto {
     private MultipartFile image;
 }
 
+
+
+
+
+
