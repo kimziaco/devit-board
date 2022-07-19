@@ -1,4 +1,5 @@
 package com.devit.board.controller;
+
 import com.devit.board.dto.BoardRequestDto;
 import com.devit.board.entity.Board;
 import com.devit.board.service.BoardService;
@@ -29,17 +30,20 @@ public class BoardController {
     }
 
     @PostMapping("/api/boards/upload")
-    public String upload(@ModelAttribute BoardRequestDto boardRequestDto,@RequestHeader(name="Authorization",required = false) String data) throws IOException {
-        System.out.println("here"+ data);
-        boardService.savePost(boardRequestDto,data);
+    public String upload(@ModelAttribute BoardRequestDto boardRequestDto, @RequestHeader(name = "Authorization", required = false) String data) throws IOException {
+        System.out.println("here" + data);
+        boardService.savePost(boardRequestDto, data);
         return "업로드성공";
     }
 
-    @PutMapping("/api/boards/{id}")
-    public Long updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto) {
+    @PostMapping("/api/boards/{id}")
+    public Long updateBoard(@PathVariable Long id, @ModelAttribute BoardRequestDto boardRequestDto) throws IOException {
         boardService.update(id, boardRequestDto);
+        System.out.println(id);
         return id;
     }
+
+
     @DeleteMapping("/api/boards/{id}")
     public String deleteBoard(@PathVariable Long id) {
         boardService.delete(id);
@@ -52,19 +56,14 @@ public class BoardController {
     }
 
     @GetMapping("/api/boards/{id}")
-    public Object boardDetail(@PathVariable UUID id){
+    public Object boardDetail(@PathVariable UUID id) {
         Board board = boardService.getDetail(id);
-        if(board == null) {
+        if (board == null) {
             return "아이디가 존재하지 않습니다.";
         } else {
             return board;
         }
     }
-
-
-
-
-
 
 
 }

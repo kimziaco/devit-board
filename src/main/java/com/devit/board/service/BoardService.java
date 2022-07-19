@@ -27,6 +27,7 @@ public class BoardService {
 
 
     public Long savePost(BoardRequestDto boardRequestDto, String data) throws IOException {
+
         String url;
         if (boardRequestDto.getImage() == null) {
             url = "default";
@@ -43,42 +44,29 @@ public class BoardService {
         board.setUserUid(userUuid);
 
 
-
         boardRepository.save(board);
         System.out.println(url);
         System.out.println(board.getId());
         return board.getId();
     }
 
-//    public Long savePost(BoardRequestDto boardRequestDto) throws IOException {
-//
-//        String url;
-//        if (boardRequestDto.getImage() == null) {
-//            url = "default";
-//        } else {
-//            url = s3Uploader.upload(boardRequestDto.getImage(), "static");
-//        }
-//
-//        Board board = new Board(boardRequestDto, url);
-//        UUID BoardUuid = UUID.randomUUID();
-//        board.setBoardUid(BoardUuid);
-//        UUID userUuid = UUID.randomUUID();
-//        board.setUserUid(userUuid);
-//
-//        boardRepository.save(board);
-//        System.out.println(url);
-//        System.out.println(board.getId());
-//        return board.getId();
-//    }
+    public Long update(Long id, BoardRequestDto boardRequestDto) throws IOException {
 
+        String url;
+        if (boardRequestDto.getImage() == null) {
+            url = "default";
+        } else {
+            url = s3Uploader.upload(boardRequestDto.getImage(), "static");
+        }
 
-    public Long update(Long id, BoardRequestDto boardRequestDto) {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("잘못된 게시물 입니다.")
         );
-        board.update(boardRequestDto);
+
+        board.update(boardRequestDto, url);
         return board.getId();
     }
+
 
     public void delete(Long id) {
         boardRepository.deleteById(id);
@@ -101,7 +89,6 @@ public class BoardService {
         }
 
     }
-
 
     public UUID getUuid(String data) { //throws NoResourceException {
 
@@ -132,8 +119,5 @@ public class BoardService {
             return boardOptional.get();
         }
     }
-
-
-
 
 }

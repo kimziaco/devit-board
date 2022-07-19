@@ -41,8 +41,8 @@ public class Board extends Timestamped {
     @Column(length = 20, nullable = false)
     private String username;
 
-    @Column(nullable = false)
-    private boolean done;
+//   @Column
+//   private boolean done;
 
     @Builder
     public Board(Long id, String title, String price, String content, String imageUrl) {
@@ -64,6 +64,14 @@ public class Board extends Timestamped {
         this.title = boardRequestDto.getTitle();
         this.content = boardRequestDto.getContent();
         this.price = boardRequestDto.getPrice();
+    }
+
+//사진 수정버전
+    public void update(BoardRequestDto boardRequestDto, String url){
+        this.title = boardRequestDto.getTitle();
+        this.content = boardRequestDto.getContent();
+        this.price = boardRequestDto.getPrice();
+        this.imageUrl = url;
     }
 }
 

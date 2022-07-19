@@ -65,16 +65,37 @@
 
     <script>
         $(document).ready(function () {
-
         });
+
+        function inputNumberFormat(obj) {
+            obj.value = comma(uncomma(obj.value));
+        }
+
+        function comma(str) {
+            str = String(str);
+            return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+        }
+
+        function uncomma(str) {
+            str = String(str);
+            return str.replace(/[^\d]+/g, '');
+        }
 
 
         function update() {
+
+            let params = new URLSearchParams(window.location.search);
+            var boardId = params.get('id')
+            console.log(boardId);
 
             let title = $('#title').val()
             let price = $("#price").val()
             let image = $('#image')[0].files[0]
             let content = $("#content").val()
+
+            console.log(title);
+            console.log(price);
+            console.log(content);
             console.log(image);
 
             let form_data = new FormData()
@@ -86,26 +107,33 @@
             }
             form_data.append("content", content)
 
-            var token = localStorage.getItem("Authorization");
+            let token = localStorage.getItem("Authorization");
             console.log(token)
 
             $.ajax({
                 type: "POST",
-                url: "/api/boards/updateBoard",
-
+                url: "/api/boards/" + boardId,
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Authorization", token);
                 },
-
                 data: form_data,
                 processData: false,
                 contentType: false,
                 success: function (response) {
+
+                    console.log(boardId)
                     console.log(response)
-                    if (response === "업로드성공") {
-                        location.href = "/boards/write-success";
+
+
+                    console.log(typeof (boardId));
+                    console.log(typeof (response));
+
+                    if (response === parseInt(boardId)) {
+                        console.log(1)
+                        location.href = "/boards/update-success";
                     } else {
-                        location.href = "/boards/write-fail";
+                        console.log(2)
+                        location.href = "/boards/update-fail";
                     }
                 }
                 , error: function (response) {
@@ -132,7 +160,8 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">제목</span>
             </div>
-            <input type="text" id="title" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"/>
+            <input type="text" id="title" class="form-control" aria-label="Default"
+                   aria-describedby="inputGroup-sizing-default"/>
         </div>
 
         <div class="input-group mb-3">
@@ -146,7 +175,9 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">가격</span>
             </div>
-            <input type="text" id="price" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            <input type="text" id="price" placeholder="원" onkeyup="inputNumberFormat(this)" class="form-control"
+                   aria-label="Default"
+                   aria-describedby="inputGroup-sizing-default">
         </div>
 
 
@@ -155,7 +186,8 @@
                 <span class="input-group-text">내용</span>
                 <div style="height: 300px; margin: 0px; display: inline-block"></div>
             </div>
-            <input type="text" id="content" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"
+            <input type="text" id="content" class="form-control" aria-label="Default"
+                   aria-describedby="inputGroup-sizing-default"
                    cols="30" rows="5">
         </div>
 

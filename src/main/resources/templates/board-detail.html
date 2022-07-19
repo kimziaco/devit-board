@@ -103,25 +103,15 @@
         }
 
         function update(id) {
-
             if (confirm("게시글을 수정하시겠습니까?") === true) {
-                $.ajax({
-                    type: "POST",
-                    url: "/api/boards/" + id,
-                    data: {},
-                    success: function (response) {
-                        if (response === "삭제성공") {
-                            alert("삭제되었습니다")
-                            location.href = "/board;"
-                        }
-                    }
-                });
+                location.href = `/boards/update?id=${id}`
+                console.log(id)
             } else {
                 return false;
-
             }
 
         }
+
         function submit(boardUid) {
             console.log(boardUid)
             if (confirm("이력서를 제출하시겠습니까?") === true) {
@@ -129,8 +119,8 @@
                     type: "POST",
                     url: `/api/users/resumes`,
                     data: {
-                        board_id : boardUid
-                     },
+                        board_id: boardUid
+                    },
                     success: function (response) {
                         if (response === "제출성공") {
                             alert("제출이 완료되었습니다.")

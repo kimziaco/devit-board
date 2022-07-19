@@ -45,5 +45,17 @@ public class BoardViewController {
         return "board-update";
     }
 
+    @GetMapping("/boards/update-success")
+    public String boardUpdateSuccess(){
+        return "board-update-success";
+    }
+
+    @GetMapping("/boards/update-fail")
+    public String boardUpdateFail(){
+        return "board-update-fail";
+    }
+
+
+
 
 }
