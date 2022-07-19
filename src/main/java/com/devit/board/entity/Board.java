@@ -41,8 +41,9 @@ public class Board extends Timestamped {
     @Column(length = 20, nullable = false)
     private String username;
 
-//   @Column
-//   private boolean done;
+    @OneToMany
+    @JoinColumn
+    private Resume resume;
 
     @Builder
     public Board(Long id, String title, String price, String content, String imageUrl) {
@@ -66,7 +67,7 @@ public class Board extends Timestamped {
         this.price = boardRequestDto.getPrice();
     }
 
-//사진 수정버전
+
     public void update(BoardRequestDto boardRequestDto, String url){
         this.title = boardRequestDto.getTitle();
         this.content = boardRequestDto.getContent();

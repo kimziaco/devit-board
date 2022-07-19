@@ -52,16 +52,15 @@ public class BoardService {
 
     public Long update(Long id, BoardRequestDto boardRequestDto) throws IOException {
 
-        String url;
-        if (boardRequestDto.getImage() == null) {
-            url = "default";
-        } else {
-            url = s3Uploader.upload(boardRequestDto.getImage(), "static");
-        }
-
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("잘못된 게시물 입니다.")
         );
+
+        String url= board.getImageUrl();
+
+        if (boardRequestDto.getImage() != null) {
+            url = s3Uploader.upload(boardRequestDto.getImage(), "static");
+        }
 
         board.update(boardRequestDto, url);
         return board.getId();
@@ -85,9 +84,8 @@ public class BoardService {
         if (keyword == null || keyword.equals("")) {
             return boardRepository.findAll(pageable);
         } else {
-            return boardRepository.findByTitleContaining(keyword, pageable);
+            return boardRepository.findByTitleOrContentContaining(keyword, pageable);
         }
-
     }
 
     public UUID getUuid(String data) { //throws NoResourceException {

@@ -43,7 +43,6 @@ public class BoardController {
         return id;
     }
 
-
     @DeleteMapping("/api/boards/{id}")
     public String deleteBoard(@PathVariable Long id) {
         boardService.delete(id);
@@ -58,12 +57,13 @@ public class BoardController {
     @GetMapping("/api/boards/{id}")
     public Object boardDetail(@PathVariable UUID id) {
         Board board = boardService.getDetail(id);
-        if (board == null) {
+        if(board == null) {
             return "아이디가 존재하지 않습니다.";
         } else {
             return board;
         }
     }
+
 
 
 }

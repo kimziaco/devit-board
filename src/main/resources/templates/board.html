@@ -19,6 +19,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&display=swap" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
@@ -27,12 +30,14 @@
     <script src="/css/includeRouter.js"></script>
 
     <style>
+
         * {
-            font-family: 'Do Hyeon', sans-serif;
+            font-family: 'Nanum Gothic', sans-serif;
         }
 
         .writer {
-            font-family: 'Do Hyeon', sans-serif;
+            font-family: 'Nanum Gothic', sans-serif;
+            font-weight: bold;
         }
 
         .btn {
@@ -121,8 +126,10 @@
             let page = 1;
             if (params.get('page') != null) {
                 page = parseInt(params.get("page")) + 1;
+                console.log(page)
             }
             let searchText = params.get("search");
+            console.log(searchText)
             if (searchText == null) {
                 location.href = `/board?page=${page}`;
             } else {
@@ -197,14 +204,12 @@
             $('#board-list').empty();
             $('#button-list').empty();
             $('#recent-list').empty()
-            let pageSize = 5;
+            let pageSize = 10;
             let url = `/api/boards?page=${page}&pageSize=${pageSize}`
             if (searchText !== "") {
                 url += `&keyword=${searchText}`;
             }
             console.log(url);
-
-
 
             $.ajax({
                 type: "GET",
@@ -215,11 +220,13 @@
                     console.log(response)
                     let boards = response['content']
                     let favorites = []
+
                     let total = response['totalPages'];
+                    let searchtotal = response['totalElements'];
 
 
                     if (searchText !== '') {
-                        $('#search-text').text(`${total} results for ${searchText}`)
+                        $('#search-text').text(`${searchtotal} results for ${searchText}`)
                     }
                     for (let i = 0; i < boards.length; i++) {
 
@@ -244,6 +251,7 @@
                         if (favorites.includes(board_id)) {
                             if (image_url === "default") {
                                 tmp_html = `
+
                         <article class="clear-after white-card">
                             <div class="column three card">
                                 <img src="https://devit-board.s3.ap-northeast-2.amazonaws.com/static/logo.png" alt="" class="thumbnail">
@@ -259,11 +267,10 @@
                                 <h2><a href="#" onclick="boardDetail('${boards[i]['boardUid']}')">${title}</a></h2>
                                 <h5 class="meta-post">
                                     <p class="writer">작성자 : ${writer}
-                                        <time datetime="2013-11-10">[${created_at}]</time>
+                                        <time datetime="2013-11-10">작성시간:[${created_at}]</time>
                                     </p>
                                 </h5>
-
-                                <p> ${price} 원 </p>
+                                <p>${price}원</p>
                                 <p>${content}</p>
                             </div><!-- column nine -->
                         </article>
@@ -281,14 +288,12 @@
                                 </button></div></div>
 
                             <div class="column nine last">
-
-                                <h2><a href="#" onclick="boardDetail('${boards[i]['boardUid']}')"${title}</h2>
-                                <h5 class="meta-post">
-                                    <p class="writer">작성자 : ${writer} -
-                                        <time datetime="2013-11-10">${created_at}</time>
-                                    </p>
-                                </h5>
-                                <p> ${price} 원 </p>
+                                <h2><a href="#" onclick="boardDetail('${boards[i]['boardUid']}')"${title}</a></h2>
+                                    <h5 class="meta-post">
+                                    <p class="writer">작성자 : ${writer} </p>
+                                    <p datetime="2013-11-10">작성시간: ${created_at}</p>
+                                    </h5>
+                                <p>${price}원 </p>
                                 <p>${content}</p>
                             </div><!-- column nine -->
                         </article>
@@ -300,7 +305,7 @@
                         <article class="clear-after white-card">
                             <div class="column three card">
                                 <img src="/css/logo.png" alt="" class="thumbnail">
-<div id="bookmark">
+                    <div id="bookmark">
                             <button class="favorite" style="border: 0; outline: 0; background-color:transparent" onclick="favorite_write('${board_id}')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
                                     <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
@@ -310,13 +315,12 @@
                             <div class="column nine last">
                                 <h2><a href="#" onclick="boardDetail('${boards[i]['boardUid']}')">${title}</a></h2>
                                 <h5 class="meta-post">
-                                    <p class="writer">작성자 : ${writer}
-                                        <time datetime="2013-11-10">[${created_at}]</time>
-                                    </p>
+                                    <p class="writer">작성자 : ${writer} </p>
+                                    <p datetime="2013-11-10">작성시간: ${created_at}</p>
                                 </h5>
-                                <p> ${price} 원 </p>
+                                <p>${price}원</p>
                                 <p>${content}</p>
-                            </div><!-- column nine -->
+                   </div><!-- column nine -->
                         </article>
                         `;
                             } else {
@@ -326,7 +330,7 @@
 
                                 <img src="${image_url}" alt="" class="thumbnail">
                                     <div id="bookmark">
-                                                                <button class="favorite" style="border: 0; outline: 0; background-color:transparent" onclick="favorite_write('${board_id}')">
+                                    <button class="favorite" style="border: 0; outline: 0; background-color:transparent" onclick="favorite_write('${board_id}')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
                                     <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
                                 </svg>
@@ -334,13 +338,12 @@
 </div>
 
                             <div class="column nine last">
-                                <h2><a href="#" onclick="boardDetail('${boards[i]['boardUid']}')">${title}</h2>
+                                <h2><a href="#" onclick="boardDetail('${boards[i]['boardUid']}')">${title}</a></h2>
                                 <h5 class="meta-post">
-                                    <p class="writer">작성자 : ${writer} -
-                                        <time datetime="2013-11-10">${created_at}</time>
-                                    </p>
+                                    <p class="writer">작성자 : ${writer} </p>
+                                    <p datetime="2013-11-10">작성시간: ${created_at}</p>
                                 </h5>
-                                <p> ${price} 원 </p>
+                                <p>${price}원</p>
                                 <p>${content}</p>
                             </div><!-- column nine -->
                         </article>
@@ -356,6 +359,7 @@
 
                     let page_list = total - 1
                     /// (pageSize + 1);
+
                     console.log(page_list)
                     for (let i = 1; i <= page_list + 1; i++) {
                         let tmp_html = `
@@ -377,7 +381,12 @@
                     } else {
                         $('#pre-button').prop('disabled', false);
                     }
-                    if (parseInt(total) <= parseInt(page) * parseInt(pageSize)) {
+                    console.log(total)
+                    console.log(page)
+                    console.log(pageSize)
+                    console.log(parseInt(page) * parseInt(pageSize))
+
+                    if (parseInt(total) <= parseInt(page)) {
                         $('#next-button').prop('disabled', true);
                     } else {
                         $('#next-button').prop('disabled', false);
