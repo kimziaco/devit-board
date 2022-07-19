@@ -114,7 +114,9 @@
             return str.replace(/[^\d]+/g, '');
         }
 
+
         function enroll_board() {
+
             let title = $('#title').val()
             let price = $("#price").val()
             let image = $('#image')[0].files[0]
@@ -128,6 +130,7 @@
             if (image !== undefined) {
                 form_data.append("image", image)
             }
+
             form_data.append("content", content)
 
             var token = localStorage.getItem("Authorization");
@@ -175,11 +178,11 @@
                 <td><input type="text" id="title"/></td>
             </tr>
             <tr>
-                <th>비용</th>
+                <th>가격</th>
                 <td><input type="text" id="price" placeholder="원" onkeyup="inputNumberFormat(this)"/></td>
             </tr>
             <tr>
-                <th>썸네일</th>
+                <th>사진</th>
                 <td><input type="file" id="image"/></td>
             </tr>
             <tr>

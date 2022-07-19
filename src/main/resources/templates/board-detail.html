@@ -91,6 +91,27 @@
                     data: {},
                     success: function (response) {
                         if (response === "삭제성공") {
+                            alert("삭제되었습니다")
+                            location.href = "/board;"
+                        }
+                    }
+                });
+            } else {
+                return false;
+
+            }
+        }
+
+        function update(id) {
+
+            if (confirm("게시글을 수정하시겠습니까?") === true) {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/boards/" + id,
+                    data: {},
+                    success: function (response) {
+                        if (response === "삭제성공") {
+                            alert("삭제되었습니다")
                             location.href = "/board;"
                         }
                     }
@@ -100,15 +121,26 @@
 
             }
 
-
         }
-
-        function update() {
-
-        }
-
-        function submit() {
-
+        function submit(boardUid) {
+            console.log(boardUid)
+            if (confirm("이력서를 제출하시겠습니까?") === true) {
+                $.ajax({
+                    type: "POST",
+                    url: `/api/users/resumes`,
+                    data: {
+                        board_id : boardUid
+                     },
+                    success: function (response) {
+                        if (response === "제출성공") {
+                            alert("제출이 완료되었습니다.")
+                            location.href = "/board;"
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
         }
 
         function detailListing(uuid) {
@@ -123,6 +155,7 @@
 
                     let boards = response
                     let id = boards['id'];
+                    console.log(boards)
                     console.log(id)
 
                     let title = boards['title'];
@@ -130,6 +163,7 @@
                     let price = boards['price'];
                     let created_at = boards['createdAt'].split(".")[0];
                     let image_url = boards['imageUrl'];
+                    let modified_at = boards['modifiedAt'].split(".")[0];
 
                     let writer = boards['username'];
                     let userUuid = boards['userUid'];
@@ -255,9 +289,48 @@
 
                         tmp_html2 = `
                         <div class ="detail-button"></div>
-                        <button type="button" id="listbutton" style="float: right;" onClick="back()" className="btn btn-primary btn-order">목록</button>
-                        <button type="button" id="deletebutton" style="float: right;" onClick="remove('${boards['id']}')" className="btn btn-primary btn-order">삭제</button>
-                        <button type="button" id="updatebutton" style="float: right;" onClick="update()" className="btn btn-primary btn-order">수정</button>
+                        <button type="button"  style="float: right;" onClick="back()" className="btn btn-primary btn-order">목록</button>
+                        <button type="button"  style="float: right;" onClick="remove('${boards['id']}')" className="btn btn-primary btn-order">삭제</button>
+                        <button type="button"  style="float: right;" onClick="update('${boards['id']}')" className="btn btn-primary btn-order">수정</button>
+                        </div>
+
+
+                        <div class="container">
+                            <div class="reviews">
+                                <table class="table">
+                                    <thead>
+
+                                    <tr>
+                                        <th scope="col">이력서 제출 현황</th>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="col">번호</th>
+                                        <th scope="col">작성자</th>
+                                        <th scope="col">작성일</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="reviews-box">
+                                    <tr>
+                                        <td>1</td>
+                                        <td><a href="#">김지호</a> </td>
+                                        <td>2022-02-17</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>2</td>
+                                        <td><a href="#">김대희</a> </td>
+                                        <td>2022-02-17</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>3</td>
+                                        <td><a href="#">이다혜</a> </td>
+                                        <td>2022-02-17</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         `;
 
@@ -265,7 +338,7 @@
 
                     } else {
                         tmp_html2 = `
-                        <button type="button" id="submitbutton" style="float: right;" onClick="submit" className ="btn btn-primary btn-order">제출</button>
+                        <button type="button" id="submitbutton" style="float: right;" onClick="submit('${boards['boardUid']}')" className ="btn btn-primary btn-order">제출</button>
                         <button type="button" id="listbutton" style="float: right;" onClick="back()" className="btn btn-primary btn-order">목록</button>
                         `;
                         $('#buttons').append(tmp_html2)

@@ -40,9 +40,9 @@ public class BoardViewController {
         return "board-detail";
     }
 
-    @GetMapping("/boards/prac")
-    public String prac(){
-        return "prac2";
+    @GetMapping("/boards/update")
+    public String update(){
+        return "board-update";
     }
 
 

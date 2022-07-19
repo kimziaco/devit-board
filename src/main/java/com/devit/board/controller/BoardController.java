@@ -35,14 +35,6 @@ public class BoardController {
         return "업로드성공";
     }
 
-//    @PostMapping("/api/boards/upload")
-//    public String upload(@ModelAttribute BoardRequestDto boardRequestDto) throws IOException {
-//        System.out.println("1");
-//        boardService.savePost(boardRequestDto);
-//        return "업로드를 성공했습니다.";
-//    }
-
-
     @PutMapping("/api/boards/{id}")
     public Long updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto) {
         boardService.update(id, boardRequestDto);
