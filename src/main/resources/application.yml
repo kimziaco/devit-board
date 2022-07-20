@@ -3,11 +3,11 @@ spring:
     allow-bean-definition-overriding: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/devit_board?serverTimezone=Asia/Seoul
-    username: devit
-    password: 1234
+    url: jdbc:mysql://database-devit-board.copkmnpqtze8.ap-northeast-2.rds.amazonaws.com:3306/devit_board?serverTimezone=Asia/Seoul
+    username: jeeho
+    password: 12345678
   rabbitmq:
-    host: local  # 52.79.236.81
+    host: 52.79.236.81
     password: 1234
     port: 5672
     username: devit
@@ -20,10 +20,12 @@ spring:
         default-page-size: 10
         one-indexed-parameters: true
 
+  application:
+    name: board-service
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
 
 
   jpa:
@@ -44,3 +46,14 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
+
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://54.180.93.206:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    prefer-ip-address: true
