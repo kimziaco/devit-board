@@ -1,12 +1,14 @@
 package com.devit.board.entity;
 
 import com.devit.board.dto.BoardRequestDto;
+import com.devit.board.rabbitMQ.entity.Resume;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -41,8 +43,8 @@ public class Board extends Timestamped {
     @Column(length = 20, nullable = false)
     private String username;
 
-    @Column(nullable = false)
-    private boolean done;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "board")
+    private List<Resume> resume;
 
     @Builder
     public Board(Long id, String title, String price, String content, String imageUrl) {
@@ -64,6 +66,14 @@ public class Board extends Timestamped {
         this.title = boardRequestDto.getTitle();
         this.content = boardRequestDto.getContent();
         this.price = boardRequestDto.getPrice();
+    }
+
+
+    public void update(BoardRequestDto boardRequestDto, String url){
+        this.title = boardRequestDto.getTitle();
+        this.content = boardRequestDto.getContent();
+        this.price = boardRequestDto.getPrice();
+        this.imageUrl = url;
     }
 }
 

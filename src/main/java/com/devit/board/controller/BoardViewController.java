@@ -40,10 +40,22 @@ public class BoardViewController {
         return "board-detail";
     }
 
-    @GetMapping("/boards/prac")
-    public String prac(){
-        return "prac2";
+    @GetMapping("/boards/update")
+    public String update(){
+        return "board-update";
     }
+
+    @GetMapping("/boards/update-success")
+    public String boardUpdateSuccess(){
+        return "board-update-success";
+    }
+
+    @GetMapping("/boards/update-fail")
+    public String boardUpdateFail(){
+        return "board-update-fail";
+    }
+
+
 
 
 }
