@@ -25,6 +25,7 @@
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
     <script src="/css/includeHTML.js"></script>
     <script src="/css/includeRouter.js"></script>
@@ -169,35 +170,6 @@
         }
 
 
-        function favorite_write(dic) {
-
-            $.ajax({
-                type: "POST",
-                url: `/api/favorite/write`,
-                data: {
-                    board_id: dic //게시글 pk 값
-                },
-                success: function (response) {
-                    $("#bookmark").load(window.location.href + "#bookmark"); // 화면 과부화를 없애기 위해 특정 태그만 재부팅
-
-                }
-            })
-        }
-
-        function favorite_delete(dic) {
-
-            $.ajax({
-                type: "POST",
-                url: `/api/favorite/delete`,
-                data: {
-                    board_id: dic //게시글 pk 값
-                },
-                success: function (response) {
-                    $("#bookmark").load(window.location.href + "#bookmark"); // 화면 과부화를 없애기 위해 특정 태그만 재부팅
-
-                }
-            })
-        }
 
         function boardList(page, searchText) {
 
@@ -226,7 +198,7 @@
 
 
                     if (searchText !== '') {
-                        $('#search-text').text(`${searchtotal} results for ${searchText}`)
+                        $('#search-text').text(`${searchText} 에 대한 검색결과 ${searchtotal}개`)
                     }
                     for (let i = 0; i < boards.length; i++) {
 
@@ -241,6 +213,7 @@
                         let content = boards[i]['content'];
                         let price = boards[i]['price'];
                         let created_at = boards[i]['createdAt'].split(".")[0];
+                        created_at = moment(created_at).format('YYYY-MM-DD HH:mm:ss');
                         let image_url = boards[i]['imageUrl'];
                         let board_id = String(boards[i]['boardUid']);
                         let user_id = String(boards[i]['userUid'])
@@ -255,12 +228,6 @@
                         <article class="clear-after white-card">
                             <div class="column three card">
                                 <img src="https://devit-board.s3.ap-northeast-2.amazonaws.com/static/logo.png" alt="" class="thumbnail">
-                                <div id="bookmark">
-                                <button class="favorite" style="border: 0; outline: 0; background-color:transparent" onclick="boardDetail('${boards[i]['boardUid']}')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
-                                        <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
-                                    </svg>
-                                </button></div>
                             </div>
 
                             <div class="column nine last">
@@ -280,12 +247,7 @@
                         <article class="clear-after white-card">
                             <div class="column three card">
                             <img src="${image_url}" alt="" class="thumbnail">
-                            <div id="bookmark">
-                                <button class="favorite" style="border: 0; outline: 0; background-color:transparent" onclick="favorite_delete('${board_id}')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
-                                        <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
-                                    </svg>
-                                </button></div></div>
+                            </div>
 
                             <div class="column nine last">
                                 <h2><a href="#" onclick="boardDetail('${boards[i]['boardUid']}')"${title}</a></h2>
@@ -304,13 +266,8 @@
                                 tmp_html = `
                         <article class="clear-after white-card">
                             <div class="column three card">
-                                <img src="/css/logo.png" alt="" class="thumbnail">
-                    <div id="bookmark">
-                            <button class="favorite" style="border: 0; outline: 0; background-color:transparent" onclick="favorite_write('${board_id}')">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
-                                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
-                                </svg>
-                            </button></div>
+                                <img src="https://devit-board.s3.ap-northeast-2.amazonaws.com/static/logo.png" alt="" class="thumbnail">
+
                             </div>
                             <div class="column nine last">
                                 <h2><a href="#" onclick="boardDetail('${boards[i]['boardUid']}')">${title}</a></h2>
@@ -327,16 +284,8 @@
                                 tmp_html = `
                         <article class="clear-after white-card">
                             <div class="column three card">
-
                                 <img src="${image_url}" alt="" class="thumbnail">
-                                    <div id="bookmark">
-                                    <button class="favorite" style="border: 0; outline: 0; background-color:transparent" onclick="favorite_write('${board_id}')">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
-                                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
-                                </svg>
-                            </button></div>
-</div>
-
+                                </div>
                             <div class="column nine last">
                                 <h2><a href="#" onclick="boardDetail('${boards[i]['boardUid']}')">${title}</a></h2>
                                 <h5 class="meta-post">
@@ -460,3 +409,4 @@
     });
 </script>
 </html>
+

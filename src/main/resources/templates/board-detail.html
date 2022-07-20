@@ -20,6 +20,8 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
     <title>상세보기</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
@@ -63,7 +65,8 @@
             width: 500px;
             margin: auto;
         }
-        .jump{
+
+        .jump {
             width: 500px;
         }
 
@@ -131,7 +134,7 @@
                     type: "POST",
                     url: `/api/users/resumes`,
                     data: {
-                        board_id: boardUid
+                        boardId: boardUid
                     },
                     success: function (response) {
                         if (response === "제출성공") {
@@ -145,8 +148,10 @@
             }
         }
 
-        function detailListing(uuid) {
 
+
+
+        function detailListing(uuid) {
             $('#detail-list').empty()
 
             $.ajax({
@@ -167,8 +172,13 @@
                     let image_url = boards['imageUrl'];
                     let modified_at = boards['modifiedAt'].split(".")[0];
 
+                    let resumeList = boards['resume'];
+
+
                     let writer = boards['username'];
                     let userUuid = boards['userUid'];
+
+
 
                     let tmp_html = ``;
 
@@ -271,12 +281,7 @@
                                                     </div>
                                                     <p class="form-control" id="content" cols="30" rows="5">${content}</p>
                                                 </div>
-
-
-
                                         </div>
-
-
                                     </div>
                                 </div>
                         `;
@@ -284,12 +289,12 @@
                     }
                     $('#detail-list').append(tmp_html)
 
-
                     tmp_html2 = ``;
                     let userInfo = parseJwt();
 
 
                     if (userUuid === userInfo["uuid"]) {
+
 
                         tmp_html2 = `
                         <div class ="detail-button"></div>
@@ -305,10 +310,6 @@
                                 <table class="table">
 
                                     <thead>
-
-<!--                                    <tr>-->
-<!--                                        <th> 이력서 제출 현황</th>-->
-<!--                                    </tr>-->
                                     <h4>이력서 제출 현황</h4>
 
                                     <tr>
@@ -319,23 +320,9 @@
                                     </thead>
 
                                     <tbody id="reviews-box">
-                                    <tr>
-                                        <td>1</td>
-                                        <td><a href="#">김지호</a> </td>
-                                        <td>2022-02-17</td>
-                                    </tr>
 
-                                    <tr>
-                                        <td>2</td>
-                                        <td><a href="#">김대희</a> </td>
-                                        <td>2022-02-17</td>
-                                    </tr>
 
-                                    <tr>
-                                        <td>3</td>
-                                        <td><a href="#">이다혜</a> </td>
-                                        <td>2022-02-17</td>
-                                    </tr>
+
                                     </tbody>
                                 </table>
                             </div>
@@ -343,6 +330,24 @@
                         `;
 
                         $('#buttons').append(tmp_html2)
+
+                        for(let i= 0; i<resumeList.length; i++){
+                            let username = resumeList[i]['username'];
+                            let createdAt = resumeList[i]['createdAt']
+                            createdAt = moment(createdAt).format('YYYY-MM-DD HH:mm');
+                            let url = "/api/user/resume-detail?user-uid" + resumeList[i]['userUid'];
+
+                            tmp_html = `
+                                                    <tr>
+                                                        <td>${i+1}</td>
+                                                        <td><a href="${url}">${username}</a> </td>
+                                                        <td>${createdAt}</td>
+                                                    </tr>
+
+
+                            `;
+                            $('#reviews-box').append(tmp_html)
+                        }
 
                     } else {
                         tmp_html2 = `
@@ -414,7 +419,8 @@
         </div>
     </div>
     <div class="detail-button" id="buttons"></div>
-</div>
+    </div>
+    <div class="resume-list" id="resumes"></div>
 
 
 </body>

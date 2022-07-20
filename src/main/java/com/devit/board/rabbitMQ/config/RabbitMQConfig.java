@@ -1,4 +1,4 @@
-package com.devit.board;
+package com.devit.board.rabbitMQ.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
