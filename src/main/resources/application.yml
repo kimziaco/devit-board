@@ -1,0 +1,46 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/devit_board?serverTimezone=Asia/Seoul
+    username: devit
+    password: 1234
+  rabbitmq:
+    host: local  # 52.79.236.81
+    password: 1234
+    port: 5672
+    username: devit
+    exchange: x.devit.board
+    queue: q.devit.board
+    routingkey: devit.routingkey
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        one-indexed-parameters: true
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIA5OW66KNY5ENMSAYI
+      secretKey: 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
+    s3:
+      bucket: devit-board
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
