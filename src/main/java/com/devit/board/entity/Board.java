@@ -37,7 +37,7 @@ public class Board extends Timestamped {
     @Column(nullable = false, unique = true, columnDefinition = "BINARY(16)")
     private UUID boardUid;
 
-    @Column(nullable = false, unique = true, columnDefinition = "BINARY(16)")
+    @Column(nullable = false, columnDefinition = "BINARY(16)")
     private UUID userUid;
 
     @Column(length = 20, nullable = false)

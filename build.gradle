@@ -26,6 +26,7 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
     implementation group: 'org.json', name: 'json', version: '20160810'
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    implementation 'com.netflix.eureka:eureka-client:1.10.17'
 
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'

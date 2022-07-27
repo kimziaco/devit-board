@@ -19,20 +19,24 @@ spring:
       pageable:
         default-page-size: 10
         one-indexed-parameters: true
-
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
-
-
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         format_sql: true
-
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize : 12MB
+  logging:
+    level:
+      root: info
+    file:
+      name: /home/ubuntu/log/application-debug.log
 cloud:
   aws:
     credentials:
