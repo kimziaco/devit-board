@@ -1,4 +1,4 @@
-package com.devit.board.response;
+package com.devit.board.repository.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
